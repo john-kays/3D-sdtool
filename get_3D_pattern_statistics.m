@@ -96,8 +96,9 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 	% --- initializations
 
 		% add necessary functions
-		functionname = 'get_3D_pattern_statistics.m';
-	    functiondir = which(functionname);
+		% functionname = 'get_3D_pattern_statistics.m';
+		% functiondir = which(functionname);
+		functiondir = pwd;
 		addpath([functiondir '/utils'])
 
 		% 2D signal from zero
@@ -110,7 +111,7 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 	% --- get the centroids
 
 		% function that find peaks over 2D signals
-		pks = FastPeakFind(Z, median(Z));
+		pks = FastPeakFind(Z, median(median(Z)) * .25);
 
 		% then the centroids are
 		centers = [pks(1:2:end), pks(2:2:end)];
@@ -118,51 +119,61 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 	% --- get the features from centroids
 
 		% function that computes the features
-		[wc, hc, xp, yp] = get_features(Z, centers);
+		% [wc, hc, xp, yp] = get_features(Z, centers);
+		[wc, hc, pc] = get_features(Z, centers);
 
 	% --- get the statistics
 
 		% -- center-to-center pitch
-			wcmean = mean(wc);
-			wcstd = std(wc);
-			wclow = floor(wcmean - 0);
-			nnx = floor(lx/wclow);
-			nny = floor(ly/wclow);
+			% wcmean = mean(wc);
+			% wcstd = std(wc);
+			% wclow = floor(wcmean - 0);
+			% nnx = floor(lx/wclow);
+			% nny = floor(ly/wclow);
 
-			pitch = [];
-			for i = 1:nny
-				st = (i-1) * wclow + 1;
-				en = min(ly, (i  ) * wclow);
-				xpc = xp(st:en, :);
-				d = diff(sort( xpc(~isnan(xpc)) ));
-				d = d(d~=0);
-				pitch = [pitch; d];
-			end
-			for i = 1:nnx
-				st = (i-1) * wclow + 1;
-				en = min(lx, (i  ) * wclow);
-				ypc = yp(:, st:en);
-				d = diff(sort( ypc(~isnan(ypc)) ));
-				d = d(d~=0);
-				pitch = [pitch; d];
-			end
+			% pitch = [];
+			% for i = 1:nny
+			% 	st = (i-1) * wclow + 1;
+			% 	en = min(ly, (i  ) * wclow);
+			% 	xpc = xp(st:en, :);
+			% 	d = diff(sort( xpc(~isnan(xpc)) ));
+			% 	d = d(d~=0);
+			% 	pitch = [pitch; d];
+			% end
+			% for i = 1:nnx
+			% 	st = (i-1) * wclow + 1;
+			% 	en = min(lx, (i  ) * wclow);
+			% 	ypc = yp(:, st:en);
+			% 	d = diff(sort( ypc(~isnan(ypc)) ));
+			% 	d = d(d~=0);
+			% 	pitch = [pitch; d];
+			% end
 
-			pmean = mean(pitch);
-			pstd = std(pitch);
+			% pmean = mean(pitch);
+			% pstd = std(pitch);
+			pmean = mean(pc);
+			pstd = std(pc);
 			pmin = pmean - pstd;
 			pmax = pmean + pstd;
+			% pmin = min(pc);
+			% pmax = max(pc);
 
 		% -- width
 			wmean = mean(wc);
 			wstd = std(wc);
 			wmin = wmean - wstd;
 			wmax = wmean + wstd;
+			% wmin = min(wc);
+			% wmax = max(wc);
 
 		% -- height
 			hmean = mean(hc);
 			hstd = std(hc);
+			% hmin = hmean - hstd;
+			% hmax = hmean + hstd;
 			hmin = min(hc); %hmean - hstd;
 			hmax = max(hc); %hmean + hstd;
+
 
 	% --- output variables
 
@@ -171,4 +182,4 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 		polyshape = {pattype, [wmean, wstd, wmin, wmax], [hmean, hstd, hmin, hmax]};
 		distparams = [pmean, pstd, pmin, pmax];
 		imsize = [ly, lx];
-		features = {wc, hc, centers};
+		features = {wc, hc, pc, centers};

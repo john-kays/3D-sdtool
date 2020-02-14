@@ -53,7 +53,7 @@
 %                                                                              %
 %------------------------------------------------------------------------------%
 
-function [wc, hc, xp, yp] = get_features(Zsurf, pts)
+function [wc, hc, pc] = get_features(Zsurf, pts)
 
 	% --- initialization
 
@@ -69,8 +69,9 @@ function [wc, hc, xp, yp] = get_features(Zsurf, pts)
 		% create matrices to return each feature
 		wc = zeros(K, 1); % pattern widths
 		hc = zeros(K, 1); % pattern heights
-		xp = NaN(s);      % coordenate x for geolocatization at the surface
-		yp = NaN(s);      % coordenate y geolocatization at the surface
+		pc = zeros(K, 1); % pattern pitch
+		% xp = NaN(s);      % coordenate x for geolocatization at the surface
+		% yp = NaN(s);      % coordenate y geolocatization at the surface
 
 	% --- sweep for each centroid
 
@@ -130,9 +131,13 @@ function [wc, hc, xp, yp] = get_features(Zsurf, pts)
 		wc(k) = mean([ range(iy), range(ix) ]);
 
 		% get the heigth of the current cluster
-		hc(k) = Zsurf(yo, xo) - mean(Z) * .5;
+		hc(k) = Zsurf(yo, xo) - mean(Z(:)) * 1.;
 
 		% fill the coordenates in the geolocalization matrices
-		xp(yo, xo) = xo;
-		yp(yo, xo) = yo;
+		% xp(yo, xo) = xo;
+		% yp(yo, xo) = yo;
+
+		euc = sqrt( (pts(:, 1) - xo).^2 + (pts(:, 2) - yo).^2 );
+		euc = sort(euc);
+		pc(k, 1) = euc(2)*1;
 	end

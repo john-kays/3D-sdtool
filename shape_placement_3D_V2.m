@@ -72,7 +72,7 @@
 %      zlim([-10 h+10])                                                        %
 %      view(45, 20)                                                            %
 %------------------------------------------------------------------------------%
-function [img, pr, ws, hs] = shape_placement_3D_V2(imsize, polyshape, distparams)
+function [img, pr, wsp, hsp] = shape_placement_3D_V2(imsize, polyshape, distparams)
 
 %--- Initializations
 	
@@ -111,8 +111,10 @@ function [img, pr, ws, hs] = shape_placement_3D_V2(imsize, polyshape, distparams
 	wstd = wp(2);
 	ws = wstd.*randn([nshapes.^2,2]) + wmean;
 	ws = ws(1:nshapes(1), 1:nshapes(2), :);
+	wsp{1} = ws;
 	if length(wp) > 2
 		ws = max(wp(3), min(wp(4), ws));
+		wsp{2} = ws;
 	end
 
 	% heigts
@@ -121,8 +123,10 @@ function [img, pr, ws, hs] = shape_placement_3D_V2(imsize, polyshape, distparams
 	hstd = hp(2);
 	hs = hstd.*randn([nshapes.^2,2]) + hmean;
 	hs = hs(1:nshapes(1), 1:nshapes(2), :);
+	hsp{1} = hs;
 	if length(hp) > 2
 		hs = max(hp(3), min(hp(4), hs));
+		hsp{2} = hs;
 	end
 
 %--- Get the angles for the rotation
@@ -267,7 +271,7 @@ function [Z] = getshape(shape, X, Y, w, h, xo, yo)
 end
 
 function [X,Y,Z] = hemisphere(X, Y, w, h, xo, yo)
-	denf = .6;
+	denf = .45;
 	R = w / 2;
 	Z = h*exp(-( ( (X-xo).^2/(denf*R^2) ) + ( (Y-yo).^2/(denf*R^2) ) ));
 
