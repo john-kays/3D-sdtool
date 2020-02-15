@@ -98,8 +98,9 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 		% add necessary functions
 		% functionname = 'get_3D_pattern_statistics.m';
 		% functiondir = which(functionname);
-		functiondir = pwd;
-		addpath([functiondir '/utils'])
+		% functiondir = pwd;
+		% addpath([functiondir '/utils'])
+		Zsurf = min(10e-5, Zsurf);
 
 		% 2D signal from zero
 		Z = Zsurf - min(Zsurf(:));
@@ -111,7 +112,7 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 	% --- get the centroids
 
 		% function that find peaks over 2D signals
-		pks = FastPeakFind(Z, median(median(Z)) * .25);
+		pks = FastPeakFind(Z, median(median(Z)));
 
 		% then the centroids are
 		centers = [pks(1:2:end), pks(2:2:end)];

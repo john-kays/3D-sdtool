@@ -78,7 +78,7 @@ function [wc, hc, pc] = get_features(Zsurf, pts)
 	for k = 1:K
 
 		% get the centroid coordenates
-		xo = pts(k, 1); 
+		xo = pts(k, 1);
 		yo = pts(k, 2);
 
 		% create a mask for clustering
@@ -131,7 +131,7 @@ function [wc, hc, pc] = get_features(Zsurf, pts)
 		wc(k) = mean([ range(iy), range(ix) ]);
 
 		% get the heigth of the current cluster
-		hc(k) = Zsurf(yo, xo) - mean(Z(:)) * 1.;
+		hc(k) = Zsurf(yo, xo) - mean(Z(:)) * .8;
 
 		% fill the coordenates in the geolocalization matrices
 		% xp(yo, xo) = xo;
@@ -139,5 +139,5 @@ function [wc, hc, pc] = get_features(Zsurf, pts)
 
 		euc = sqrt( (pts(:, 1) - xo).^2 + (pts(:, 2) - yo).^2 );
 		euc = sort(euc);
-		pc(k, 1) = euc(2)*1;
+		pc(k, 1) = euc(2)*.7;
 	end
