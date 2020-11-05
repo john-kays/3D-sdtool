@@ -154,18 +154,18 @@ function [polyshape, distparams, imsize, features] = get_3D_pattern_statistics(Z
 			% pstd = std(pitch);
 			pmean = mean(pc);
 			pstd = std(pc);
-			pmin = pmean - pstd;
-			pmax = pmean + pstd;
-			% pmin = min(pc);
-			% pmax = max(pc);
+			% pmin = pmean - pstd;
+			% pmax = pmean + pstd;
+			pmin = min(pc);
+			pmax = max(pc);
 
 		% -- width
 			wmean = mean(wc);
 			wstd = std(wc);
-			wmin = wmean - wstd;
-			wmax = wmean + wstd;
-			% wmin = min(wc);
-			% wmax = max(wc);
+			% wmin = wmean - wstd;
+			% wmax = wmean + wstd;
+			wmin = min(wc);
+			wmax = max(wc);
 
 		% -- height
 			hmean = mean(hc);

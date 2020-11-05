@@ -128,10 +128,10 @@ function [wc, hc, pc] = get_features(Zsurf, pts)
 		% last ind has the width information
 		% get the width of the current cluster (pattern)
 		[iy, ix] = find(ind);
-		wc(k) = mean([ range(iy), range(ix) ]);
+		wc(k) = mean([ range(iy), range(ix) ]) * 1.1;
 
 		% get the heigth of the current cluster
-		hc(k) = Zsurf(yo, xo) - mean(Z(:)) * .8;
+		hc(k) = Zsurf(yo, xo) - mean(Z(:)) * .5;
 
 		% fill the coordenates in the geolocalization matrices
 		% xp(yo, xo) = xo;
@@ -139,5 +139,5 @@ function [wc, hc, pc] = get_features(Zsurf, pts)
 
 		euc = sqrt( (pts(:, 1) - xo).^2 + (pts(:, 2) - yo).^2 );
 		euc = sort(euc);
-		pc(k, 1) = euc(2)*.7;
+		pc(k, 1) = euc(2)*.9;
 	end
