@@ -11,6 +11,7 @@ import scipy
 
 
 #>>>>>>>>>>>>>>>>> For graphics <<<<<<<<<<<<<<<<<<<<<
+
 def graph_3d(X,Y,Z,title='Title'):
     fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y, colorscale='RdBu_r',
                                      cmin=np.min(Z),cmax=np.max(Z),
@@ -338,7 +339,7 @@ def get_3d_pattern_statistics(Zsurf, pattype=None):
 
          Outputs:   
 
-          -polyshape:    Dictionary with::      
+          -polyshape:    Dictionary with:     
                          - First key is a string specifying the type of 3D shape de- 
                            sired (see the table below to know the types of shapes     
                            available).                                                
@@ -732,9 +733,10 @@ def getshape(shape,X,Y,w,h,xo,yo):
     sh = shape.lower()
     
     if sh == 'ht' or sh == 'htop':
-        X,Y,Z = hemisphere(X,Y,w,h,xo,yo)
+        X,Y,Z = hole_top(X,Y,w,h,xo,yo)
     elif sh == 'hb' or sh == 'hbottom':
-        X,Y,Z = hemisphere(X,Y,w,h,xo,yo)
+        X,Y,Z = hole_top(X,Y,w,h,xo,yo)
+        Z = -Z
     elif sh =='pt' or sh == 'cylinder':
         X,Y,Z = hemisphere(X,Y,w,h,xo,yo)
     elif sh == 'pb' or sh == 'cone':
@@ -742,7 +744,7 @@ def getshape(shape,X,Y,w,h,xo,yo):
         
     return Z
         
-def hemisphere(X,Y,w,h,xo,yo):
+def hole_top(X,Y,w,h,xo,yo):
     t = 3
 
     if t==1:
@@ -771,3 +773,5 @@ def hemisphere(X,Y,w,h,xo,yo):
 
     return X,Y,Z
     
+
+
