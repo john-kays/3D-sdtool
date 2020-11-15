@@ -308,13 +308,13 @@ def get_features(Zsurf,pts):
         wc.append(np.max([max(ix)-min(ix), max(iy)-min(iy) ])*1.0)
 
         #get the heigth of the current cluster
-        hc.append(np.abs( Zsurf[yo,xo]-np.min(Z)*1.1 ))
+        hc.append( (Zsurf[yo,xo]-np.min(Z)) * 1.0 )
         # hc.append( np.abs( Zsurf[yo,xo]-np.min(Zsurf) ) * 1.0 )
 
 
         euc = np.sqrt((pts[:,0]-xo)*(pts[:,0]-xo) + (pts[:,1] - yo)*(pts[:,1]-yo))
         euc = np.sort(euc)
-        pc.append( ( euc[1] + euc[1] ) * 0.5 * 0.9 )
+        pc.append( np.mean( euc[1:2] ) * 0.8 )
     return wc,hc,pc
 
 def get_3d_pattern_statistics(Zsurf, pattype=None):
@@ -379,7 +379,7 @@ def get_3d_pattern_statistics(Zsurf, pattype=None):
     # then the centroids are
     x,y = np.nonzero(pks)
     centers = np.array([[x_,y_] for x_,y_ in zip(x,y) ])
-    print('Nun Peaks found: %d' %(len(centers)))
+    print('Num Peaks found: %d' %(len(centers)))
     #---get the features from centroids
     
     # function that computes the features
