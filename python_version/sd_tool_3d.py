@@ -379,7 +379,7 @@ def get_3d_pattern_statistics(Zsurf, pattype=None):
     # then the centroids are
     x,y = np.nonzero(pks)
     centers = np.array([[x_,y_] for x_,y_ in zip(x,y) ])
-    print('Nun Peaks found: %d' %centers)
+    print('Nun Peaks found: %d' %(len(centers)))
     #---get the features from centroids
     
     # function that computes the features
